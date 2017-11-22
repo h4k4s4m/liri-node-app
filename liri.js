@@ -16,6 +16,27 @@ const spotify = new Spotify({
 //Used for OMDB
 const request = require('request');
 
+//Logger Crap
+var log4js = require('log4js');
+log4js.configure({
+    appenders: {
+        output: {
+            type: 'file',
+            filename: 'output.log'
+        },
+        console: {
+            type: 'console'
+        }
+    },
+    categories: {
+        default: {
+            appenders: ['output', 'console'],
+            level: 'info'
+        }
+    }
+});
+var logger = log4js.getLogger('output');
+
 //General Vars
 const fs = require('fs');
 fourth = process.argv[3];
@@ -23,7 +44,7 @@ command = process.argv[2];
 
 
 
-console.log(command);
+logger.info(command);
 main();
 
 function main() {
@@ -45,19 +66,19 @@ function main() {
             doWhatItSays();
             break;
         default:
-            console.log("Unrecognized Command");
+            logger.info("Unrecognized Command");
     }
 }
 
 function tweet() {
-    console.log("Here are your Tweets: \n");
+    logger.info("Here are your Tweets: \n");
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             let counter = 0;
             for (x in tweets) {
-                console.log(tweets[x].created_at.split(' +')[0]);
-                console.log(tweets[x].text);
-                console.log("----------------------");
+                logger.info(tweets[x].created_at.split(' +')[0]);
+                logger.info(tweets[x].text);
+                logger.info("----------------------");
                 if (counter == 19) {
                     return;
                 }
@@ -80,17 +101,17 @@ function spot(song) {
             query: song
         })
         .then(function (response) {
-            console.log("Artist: ")
-            console.log(response.tracks.items[0].album.artists[0].name);
-            console.log("----------------------");
-            console.log("Song: ")
-            console.log(response.tracks.items[0].name);
-            console.log("----------------------");
-            console.log("Link: ")
-            console.log(response.tracks.items[0].album.artists[0].external_urls.spotify);
-            console.log("----------------------");
-            console.log("Album: ")
-            console.log(response.tracks.items[0].album.name);
+            logger.info("Artist: ")
+            logger.info(response.tracks.items[0].album.artists[0].name);
+            logger.info("----------------------");
+            logger.info("Song: ")
+            logger.info(response.tracks.items[0].name);
+            logger.info("----------------------");
+            logger.info("Link: ")
+            logger.info(response.tracks.items[0].album.artists[0].external_urls.spotify);
+            logger.info("----------------------");
+            logger.info("Album: ")
+            logger.info(response.tracks.items[0].album.name);
         });
 }
 
@@ -104,21 +125,21 @@ function muvies(title) {
 
     request('http://www.omdbapi.com/?apikey=40e9cece&t=' + title, function (error, data, body) {
         body = JSON.parse(body);
-        console.log("Title:", body.Title);
-        console.log("----------------------");
-        console.log("Year: ", body.Year);
-        console.log("----------------------");
-        console.log("IMDB Rating: ", body.Ratings[0].Value);
-        console.log("----------------------");
-        console.log("RT Rating: ", body.Ratings[1].Value);
-        console.log("----------------------");
-        console.log("Country: ", body.Country);
-        console.log("----------------------");
-        console.log("Language: ", body.Language);
-        console.log("----------------------");
-        console.log("Plot: ", body.Plot);
-        console.log("----------------------");
-        console.log("Actors: ", body.Actors);
+        logger.info("Title:", body.Title);
+        logger.info("----------------------");
+        logger.info("Year: ", body.Year);
+        logger.info("----------------------");
+        logger.info("IMDB Rating: ", body.Ratings[0].Value);
+        logger.info("----------------------");
+        logger.info("RT Rating: ", body.Ratings[1].Value);
+        logger.info("----------------------");
+        logger.info("Country: ", body.Country);
+        logger.info("----------------------");
+        logger.info("Language: ", body.Language);
+        logger.info("----------------------");
+        logger.info("Plot: ", body.Plot);
+        logger.info("----------------------");
+        logger.info("Actors: ", body.Actors);
 
     });
 }
@@ -126,7 +147,7 @@ function muvies(title) {
 function doWhatItSays() {
     fs.readFile('random.txt', 'utf8', function (err, fd) {
         if (err) {
-            console.log(err);
+            logger.info(err);
         }
         command = fd.split(',')[0];
         fourth = fd.split(',')[1];
