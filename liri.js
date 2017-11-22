@@ -1,7 +1,3 @@
-import {
-    prependListener
-} from 'cluster';
-
 //Twitter stuff
 const Twitter = require('twitter');
 const twitterKeys = require('./keys.js');
@@ -21,36 +17,36 @@ const spotify = new Spotify({
 const request = require('request');
 
 //General Vars
-var command = process.argv[2];
 const fs = require('fs');
-const fourth = process.argv[3];
+fourth = process.argv[3];
+command = process.argv[2];
 
-fs.readFile('random.txt', 'utf8', function (err, fd) {
-    if (err) {
-        console.log(err)
+
+
+console.log(command);
+main();
+
+function main() {
+    switch (command) {
+        case "my-tweets":
+            tweet();
+            break;
+
+        case "spotify-this-song":
+            //the 4th arguement is the song name inputed by the user
+            spot(fourth);
+            break;
+
+        case "movie-this":
+            //the 4th arguement is the movie title to be searched
+            muvies(fourth);
+            break;
+        case "do-what-it-says":
+            doWhatItSays();
+            break;
+        default:
+            console.log("Unrecognized Command");
     }
-    console.log(fd);
-});
-
-switch (command) {
-    case "my-tweets":
-        tweet();
-        break;
-
-    case "spotify-this-song":
-        //the 4th arguement is the song name inputed by the user
-        spot(fourth);
-        break;
-
-    case "movie-this":
-        //the 4th arguement is the movie title to be searched
-        muvies(fourth);
-        break;
-    case "do-what-it-says":
-        doWhatItSays();
-        break;
-    default:
-        console.log("Unrecognized Command");
 }
 
 function tweet() {
@@ -88,10 +84,13 @@ function spot(song) {
             console.log(response.tracks.items[0].album.artists[0].name);
             console.log("----------------------");
             console.log("Song: ")
+            console.log(response.tracks.items[0].name);
+            console.log("----------------------");
+            console.log("Link: ")
             console.log(response.tracks.items[0].album.artists[0].external_urls.spotify);
             console.log("----------------------");
             console.log("Album: ")
-            console.log(response.tracks.items[0].album.artists[0].album.name);
+            console.log(response.tracks.items[0].album.name);
         });
 }
 
@@ -125,5 +124,12 @@ function muvies(title) {
 }
 
 function doWhatItSays() {
-
+    fs.readFile('random.txt', 'utf8', function (err, fd) {
+        if (err) {
+            console.log(err);
+        }
+        command = fd.split(',')[0];
+        fourth = fd.split(',')[1];
+        main();
+    });
 }
