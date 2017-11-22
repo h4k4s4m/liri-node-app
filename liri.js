@@ -48,8 +48,7 @@ function tweet() {
 }
 
 function spot(song) {
-
-    if (song == 'undefined') {
+    if (!song) {
         song = 'The Sign';
     }
 
@@ -59,6 +58,11 @@ function spot(song) {
             query: song
         })
         .then(function (response) {
-            console.log(response);
+            console.log("Artist: ")
+            console.log(response.tracks.items[0].album.artists[0].name + '\n');
+            console.log("Song: ")
+            console.log(response.tracks.items[0].album.artists[0].external_urls.spotify + '\n');
+            console.log("Album: ")
+            console.log(response.tracks.items[0].album.artists[0].album.name + '\n');
         });
 }
