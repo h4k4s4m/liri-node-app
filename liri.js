@@ -71,7 +71,7 @@ function tweet() {
 
 function spot(song) {
     if (!song) {
-        song = 'The Sign';
+        song = 'The Sign Ace of Base';
     }
 
     spotify
