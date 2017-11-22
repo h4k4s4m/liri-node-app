@@ -1,0 +1,22 @@
+{
+  "name": "liri-node-app",
+  "version": "1.0.0",
+  "description": "liri-node-app",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h4k4s4m/liri-node-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/h4k4s4m/liri-node-app/issues"
+  },
+  "homepage": "https://github.com/h4k4s4m/liri-node-app#readme",
+  "dependencies": {
+    "inquirer": "^4.0.0"
+  }
+}
